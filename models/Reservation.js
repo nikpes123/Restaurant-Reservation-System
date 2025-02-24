@@ -1,14 +1,40 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const reservationSchema = new mongoose.Schema({
-    name: String,
-    date: Date,
-    seats: Number,
-    specialRequests: String,
-    created_at: {
+const reservationSchema = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',  // Reference to the user making the reservation
+        required: true
+    },
+    restaurant: {
+        type: Schema.Types.ObjectId,
+        ref: 'Restaurant',  // Reference to the restaurant
+        required: true
+    },
+    date: {
+        type: Date,
+        required: true
+    },
+    time: {
+        type: String,
+        required: true
+    },
+    seats: {
+        type: Number,
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ['Pending', 'Confirmed', 'Cancelled'],
+        default: 'Pending'
+    },
+    specialRequests: {
+        type: String
+    },
+    createdAt: {
         type: Date,
         default: Date.now
     }
 });
 
-module.exports = mongoose.model('Reservation', reservationSchema);
+export default model('Reservation', reservationSchema);
