@@ -1,15 +1,20 @@
-const express = require('express');
-const helmet = require('helmet');
-const cors = require('cors');
-const connectDB = require('../config/db');
-require('dotenv').config();
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import connectDB from '../config/db.js';
+import authRoutes from '../routes/auth.js';
+import restaurantRoutes from '../routes/restaurant.js';
+import reservationRoutes from '../routes/reservation.js';
+
+dotenv.config(); // Load environment variables
 
 const app = express();
 
 // Middleware
 app.use(helmet());
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // ✅ Use express.json() instead of `json()`
 
 // Connect Database
 connectDB();
@@ -19,8 +24,9 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Restaurant Reservation System!');
 });
 
-const authRoutes = require('../routes/auth');
 app.use('/api/auth', authRoutes);
+app.use('/api/restaurants', restaurantRoutes);
+app.use('/api/reservations', reservationRoutes); // ✅ Required for reservations API
 
 // Start Server
 const PORT = process.env.PORT || 3000;
