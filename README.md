@@ -107,3 +107,8 @@ Want to contribute? Feel free to **fork, submit pull requests, or open issues**!
 
 ## 💬 Questions?
 For any questions, feel free to reach out or open an issue! 🚀
+
+
+## Contributors:
+- Muneeb Hashmi
+- Nikhita Peswani
