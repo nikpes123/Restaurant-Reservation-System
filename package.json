@@ -1,0 +1,8 @@
+{
+    "scripts": {
+        "dev": "concurrently --kill-others-on-fail \"cd backend && npm run dev\" \"wait-on http://localhost:5000 && cd frontend && npm run dev\""
+    },
+    "devDependencies": {
+        "wait-on": "^8.0.2"
+    }
+}
