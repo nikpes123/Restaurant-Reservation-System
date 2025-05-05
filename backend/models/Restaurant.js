@@ -20,9 +20,17 @@ const RestaurantSchema = new Schema({
         type: String,
     },
     address: {
-        street: String,
-        city: String,
-        country: String
+        type: String,
+    },
+    description: {
+        type: String,
+    },
+    openingHours: {
+        type: String,
+    },
+    waitingTime: {
+        type: Number,
+        default: 10,
     },
     menu: [
         {

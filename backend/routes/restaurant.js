@@ -99,4 +99,49 @@ router.delete('/:id', authMiddleware, roleMiddleware('Restaurant'), async (req, 
     }
 });
 
+// Get all menu items for the logged-in restaurant
+router.get('/menu', authMiddleware, roleMiddleware('Restaurant'), async (req, res) => {
+    const restaurant = await Restaurant.findOne({ owner: req.user.id });
+    if (!restaurant) return res.status(404).json({ msg: 'Restaurant not found' });
+    res.json(restaurant.menu || []);
+});
+
+// Add a new menu item
+router.post('/menu', authMiddleware, roleMiddleware('Restaurant'), async (req, res) => {
+    const { name, description, price } = req.body;
+    const restaurant = await Restaurant.findOne({ owner: req.user.id });
+    if (!restaurant) return res.status(404).json({ msg: 'Restaurant not found' });
+
+    const newItem = { name, description, price };
+    restaurant.menu.push(newItem);
+    await restaurant.save();
+    res.status(201).json(restaurant.menu);
+});
+
+// Edit a menu item
+router.put('/menu/:itemId', authMiddleware, roleMiddleware('Restaurant'), async (req, res) => {
+    const { name, description, price } = req.body;
+    const restaurant = await Restaurant.findOne({ owner: req.user.id });
+    if (!restaurant) return res.status(404).json({ msg: 'Restaurant not found' });
+
+    const item = restaurant.menu.id(req.params.itemId);
+    if (!item) return res.status(404).json({ msg: 'Menu item not found' });
+
+    item.name = name;
+    item.description = description;
+    item.price = price;
+    await restaurant.save();
+    res.json(restaurant.menu);
+});
+
+// Delete a menu item
+router.delete('/menu/:itemId', authMiddleware, roleMiddleware('Restaurant'), async (req, res) => {
+    const restaurant = await Restaurant.findOne({ owner: req.user.id });
+    if (!restaurant) return res.status(404).json({ msg: 'Restaurant not found' });
+
+    restaurant.menu.id(req.params.itemId).remove();
+    await restaurant.save();
+    res.json(restaurant.menu);
+});
+
 export default router;

@@ -4,5 +4,8 @@
     },
     "devDependencies": {
         "wait-on": "^8.0.2"
+    },
+    "dependencies": {
+        "cors": "^2.8.5"
     }
 }
