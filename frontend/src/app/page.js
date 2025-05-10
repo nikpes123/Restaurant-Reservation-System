@@ -12,6 +12,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleUserTypeSelect = (type) => {
@@ -261,18 +262,34 @@ export default function HomePage() {
                   placeholder="Email"
                   value={loginForm.email}
                   onChange={handleLoginInputChange}
-                  className="border rounded px-4 py-2 placeholder-gray-800"
+                  className="border-2 border-gray-700 text-gray-900 rounded px-4 py-2 placeholder-gray-800 focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
+                <div className="relative">
                 <input
-                  type="password"
+                    type={showPassword ? 'text' : 'password'}
                   name="password"
                   placeholder="Password"
                   value={loginForm.password}
                   onChange={handleLoginInputChange}
-                  className="border rounded px-4 py-2 placeholder-gray-800"
+                    className="border-2 border-gray-700 text-gray-900 rounded px-4 py-2 placeholder-gray-800 w-full focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-800"
+                    onMouseDown={() => setShowPassword(true)}
+                    onMouseUp={() => setShowPassword(false)}
+                    onMouseLeave={() => setShowPassword(false)}
+                  >
+                    {/* Eye SVG */}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12s3.75-7.5 9.75-7.5 9.75 7.5 9.75 7.5-3.75 7.5-9.75 7.5S2.25 12 2.25 12z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                    </svg>
+                  </button>
+                </div>
                 {loginError && <div className="text-red-600 text-sm text-center">{loginError}</div>}
                 <button
                   type="submit"
