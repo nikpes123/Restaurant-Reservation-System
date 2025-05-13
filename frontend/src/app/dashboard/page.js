@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { GoogleMap, Marker, StandaloneSearchBox, useJsApiLoader } from '@react-google-maps/api';
 
-const GOOGLE_MAPS_API_KEY = 'AIzaSyBie-S4ED-xXW6R1ZCBykpPrlRCM8tDtOk'; // <-- User's real key
 const mapContainerStyle = { width: '100%', height: '300px', borderRadius: '1rem', marginBottom: '1.5rem' };
 const defaultCenter = { lat: 40.7128, lng: -74.0060 }; // Default to New York
 
@@ -365,6 +364,7 @@ export default function RestaurantDashboard() {
     tables: [],
     waitingTime: 10,
     currency: 'USD',
+    cuisine: '',
   });
   const [originalRestaurantInfo, setOriginalRestaurantInfo] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
@@ -390,7 +390,7 @@ export default function RestaurantDashboard() {
   const [expandedMenuItems, setExpandedMenuItems] = useState([]);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
     libraries: ['places'],
   });
 
@@ -1071,6 +1071,17 @@ export default function RestaurantDashboard() {
                           </div>
                         )}
                       </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-800 mb-1">Cuisine</label>
+                      <input
+                        type="text"
+                        value={restaurantInfo.cuisine}
+                        onChange={e => setRestaurantInfo({ ...restaurantInfo, cuisine: e.target.value })}
+                        className="mt-1 block w-full rounded-lg border-gray-700 text-gray-900 border-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-4 py-2 bg-gray-50"
+                        placeholder="e.g. Italian, Chinese, Indian"
+                        required
+                      />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-800 mb-1">Email (not editable)</label>
